@@ -1,12 +1,16 @@
 require 'nokogiri'
 require 'httparty'
-#require 'byebug'
+require 'shorturl'
+
 
 module GithubScrapper
 
-    # Scrap the html of the user profile page to retrieve data
+    # Method to webscrap the html of the github user profile page to retrieve data
+    # @param [String] profile_url The github link to the profile
+    # @return [Hash] user_profile Retrieved user data
     def web_scrap_user_profile(profile_url)
 
+        shortened_url = shorten_url(profile_url)
         profile_web_page = HTTParty.get(profile_url)
 
         if profile_web_page.code != 200
@@ -24,12 +28,13 @@ module GithubScrapper
         last_years_contributions = parsed_profile_page.css('h2.f4.text-normal').text
         last_years_contributions = last_years_contributions.scan(/\d+/)[0]
 
-        organizations = Array.new
+        organizations = Array.new #parsed_profile_page.css('.h-card div .avatar-group-item')
 
-        localization = parsed_profile_page.css('ul.vcard-details').first.text
+        localization = parsed_profile_page.css('ul.vcard-details span.p-label').first.text
         localization = localization.strip()
 
         user_profile = {
+            shortened_url: shortened_url,
             git_username: git_username,
             followers: followers,
             following: following,
@@ -38,11 +43,29 @@ module GithubScrapper
             profile_pic_url: profile_pic_url,
         }
 
+        # Append optional params
         unless localization.empty?
             user_profile[:localization] = localization
         end
 
+        unless organizations.empty?
+            user_profile[:organizations] = organizations
+        end
+
         return user_profile
+    end
+
+    # Method to shorten url using external services, Default service = tinyurl
+    # @param [String] url Url to be shortened
+    # @return [String] shortened_url Shortened url if no external services exceptions occurr
+    def shorten_url(url)
+        begin
+            shortened_url = ShortURL.shorten(url, :tinyurl)
+        rescue
+            shortened_url = url
+        end
+
+        return shortened_url
     end
 
 end

@@ -1,7 +1,19 @@
-<h1>Indexador de Perfis</h1>
+<head>
+    <title>Indexador de perfis</title>
+</head>
 
-<%= button_to "Adicionar novo perfil", new_profile_path, method: :get %>
+<body>
+    <h1>Indexador de Perfis</h1>
 
-<% @profiles.each do |profile|%>
-    <p><%= link_to profile.name, profile_path(profile) %></p>
-<% end %>
+    <%= button_to "Adicionar novo perfil", new_profile_path, method: :get %>
+
+    <h4>Buscar por nome: </h4>
+    <%= form_tag(profiles_path, method: :get) do %>
+        <%= text_field_tag(:search, params[:search]) %>
+        <%= submit_tag("Buscar") %>
+    <% end %>
+
+    <% Array(@profiles).each do |profile|%>
+        <p><%= link_to profile.name, profile_path(profile) %></p>
+    <% end %>
+</body>

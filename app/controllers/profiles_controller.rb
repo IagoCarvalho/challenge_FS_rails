@@ -4,7 +4,7 @@ class ProfilesController < ApplicationController
   include GithubScrapper
 
   def index
-    @profiles = Profile.all
+    @profiles = Profile.search(params[:search])
   end
 
   def new
@@ -13,7 +13,7 @@ class ProfilesController < ApplicationController
 
   def create
 
-    @profile = Profile.new(profile_params)
+    @profile = Profile.new(create_profile_params)
 
     github_data = web_scrap_user_profile(@profile.git_url)
 
@@ -21,20 +21,21 @@ class ProfilesController < ApplicationController
     puts github_data
     puts "\n\n------------------------"
     @profile.attributes = {
+      git_url: github_data[:shortened_url],
       git_username: github_data[:git_username],
       followers: github_data[:followers],
       following: github_data[:following],
       stars_given: github_data[:stars_given],
       profile_pic_url: github_data[:profile_pic_url],
-      last_years_contributions: github_data[:last_years_contributions],
+      last_years_contributions: github_data[:last_years_contributions]
     }
 
     # Optional parameters
-    if github_data.has_key? :localization
+    unless not github_data.has_key? :localization
       @profile.localization = github_data[:localization]
     end
 
-    if github_data.has_key? :organizations
+    unless not github_data.has_key? :organizations
       @profile.organizations = github_data[:organizations]
     end
 
@@ -57,8 +58,16 @@ class ProfilesController < ApplicationController
 
   def update
     @profile = Profile.find(params[:id])
-    
-    redirect_to profile_path(@profile)
+
+    if @profile.update_attributes(update_profile_params)
+      @profile.git_url = shorten_url(update_profile_params[:git_url])
+
+      redirect_to profile_path(@profile)
+    else
+      flash[:errors] = @profile.errors.full_messages
+      render :edit
+    end
+
   end
 
   def destroy
@@ -70,7 +79,7 @@ class ProfilesController < ApplicationController
 
   private
 
-  def profile_params
+  def create_profile_params
     params.require(:profile).permit(
       :name, 
       :git_url, 
@@ -82,6 +91,30 @@ class ProfilesController < ApplicationController
       :last_years_contributions,
       :organizations,
       :localization
+    )
+  end
+
+  def update_profile_params
+    params.require(:profile).permit(
+      :name,
+      :git_url
+    )
+  end
+
+  # sobrescrita de metodo?
+  def profile_search_params
+    params.require(:profile).permit(
+      :name, 
+      :git_url, 
+      :git_username, 
+      :followers, 
+      :following, 
+      :stars_given, 
+      :profile_pic_url, 
+      :last_years_contributions,
+      :organizations,
+      :localization,
+      :search
     )
   end
 

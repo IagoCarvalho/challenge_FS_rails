@@ -23,7 +23,7 @@ def scrap_user_profile(profile_url)
     last_years_contributions = parsed_profile_page.css('h2.f4.text-normal').text
     last_years_contributions = last_years_contributions.scan(/\d+/)
 
-    organizations = Array.new
+    organizations = parsed_profile_page.css('.h-card div .avatar-group-item')
 
     localization = parsed_profile_page.css('ul.vcard-details').first.text
     localization = localization.strip()
@@ -45,5 +45,5 @@ def scrap_user_profile(profile_url)
     return user_profile
 end
 
-url = "https://github.com/IagoCarvalho/"
+url = "http://tinyurl.com/y3knbx6h"
 scrap_user_profile(url)

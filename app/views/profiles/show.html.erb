@@ -1,17 +1,16 @@
 <h1>Perfil de: <%= @profile.name%></h1>
 
-<img src=<%= @profile.profile_pic_url %> alt="" width="120" height="110">
-
-<h2>Url do Github: <%= @profile.git_url %></h2>
+<%= image_tag @profile.profile_pic_url %>
+<%= link_to @profile.git_url, @profile.git_url %>
 
 <h2>Username do git: <%= @profile.git_username %></h2>
 
 <% if @profile.has_attribute?(:localization) %>
-    <h2>Localização: <%= @profile.localization %></h2>
+<h2>Localização: <%= @profile.localization %></h2>
 <% end %>
 
 <% if @profile.has_attribute?(:organizations) %>
-    <h2>Organizações: <%= @profile.organizations %></h2>
+<h2>Organizações: <%= @profile.organizations %></h2>
 <% end %>
 
 <h2>Followers: <%= @profile.followers %></h2>
@@ -20,7 +19,7 @@
 <h2>Número de seguidores: <%= @profile.followers %></h2>
 <h2>Contribuições no último ano: <%= @profile.last_years_contributions %></h2>
 
-
 <%= button_to "Editar perfil", edit_profile_path, method: :get%>
 <%= button_to "Deletar perfil", profile_path, method: :delete%>
 
+<%= link_to  "Retornar ao início", profiles_path %>
