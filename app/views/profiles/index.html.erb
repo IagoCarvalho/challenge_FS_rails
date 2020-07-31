@@ -1,0 +1,7 @@
+<h1>Indexador de Perfis</h1>
+
+<%= button_to "Adicionar novo perfil", new_profile_path, method: :get %>
+
+<% @profiles.each do |profile|%>
+    <p><%= link_to profile.name, profile_path(profile) %></p>
+<% end %>
