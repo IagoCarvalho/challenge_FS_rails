@@ -1,4 +1,4 @@
-<h1>Editar perfil</h1>
+<h4>Editar perfil</h4>
 
 <% if flash[:errors] %>
     <% flash[:errors].each do |error| %>
@@ -13,5 +13,7 @@
     <%= f.label :git_url%>
     <%= f.text_field :git_url%>
 
-    <%= f.submit %>
+    <%= f.submit 'Salvar Alterações', :class => 'btn right' %>
 <% end %>
+
+<%= link_to  "Voltar", profile_path(@profile), :class => 'btn left red' %>

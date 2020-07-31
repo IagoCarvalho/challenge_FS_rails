@@ -3,17 +3,43 @@
 </head>
 
 <body>
-    <h1>Indexador de Perfis</h1>
+    <h4>Indexador de Perfis</h4>
 
-    <%= button_to "Adicionar novo perfil", new_profile_path, method: :get %>
-
-    <h4>Buscar por nome: </h4>
     <%= form_tag(profiles_path, method: :get) do %>
-        <%= text_field_tag(:search, params[:search]) %>
-        <%= submit_tag("Buscar") %>
+        <div class="row">
+            <div class="input-field inline col s12">
+                <%= text_field_tag(:search, params[:search], :id => :search) %>
+                <label for="search">Buscar</label>
+                <span class="helper-text" data-error="wrong" data-success="right">Procure por nome, username, organização ou localização</span>
+            </div>
+        </div>
+
+        <div>
+        </div>
+        <%= submit_tag("Buscar", :class => 'btn right') %>
     <% end %>
 
-    <% Array(@profiles).each do |profile|%>
-        <p><%= link_to profile.name, profile_path(profile) %></p>
-    <% end %>
+    <div class="profile-list">
+        <% Array(@profiles).each do |profile|%>
+            <div class="profile-item-container">
+
+                <div class="profile-card-content z-depth-1">
+                    <%= image_tag profile.profile_pic_url, :class => 'circle' %>
+                    <div class="profile-info">
+                        <i class="far fa-edit"></i>
+                        <%= link_to profile.name, profile_path(profile) %>
+                    </div>
+                </div>
+
+                <div class="github-info z-depth-2">
+                    <div>
+                        <i class="fab fa-github"></i>
+                        <%= link_to profile.git_username, profile.git_url %>
+                    </div>
+                </div>
+
+            </div>
+        <% end %>
+    </div>
+
 </body>

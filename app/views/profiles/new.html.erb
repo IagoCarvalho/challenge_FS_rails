@@ -1,4 +1,4 @@
-<h1>Novo perfil</h1>
+<h4>Novo perfil</h4>
 
 <% if flash[:errors] %>
     <% flash[:errors].each do |error| %>
@@ -7,13 +7,13 @@
 <% end %>
 
 <%= form_for(@profile) do |f| %>
-    <%= f.label :name%>
+    <%= f.label "nome"%>
     <%= f.text_field :name%>
 
-    <%= f.label :git_url%>
+    <%= f.label "Url do perfil do github"%>
     <%= f.text_field :git_url%>
 
-    <%= f.submit %>
+    <%= f.submit 'Adicionar perfil', :class => 'btn right' %>
 <% end %>
 
-<%= link_to  "Retornar ao início", profiles_path %>
+<%= link_to  "Retornar ao início", profiles_path, :class => 'btn red' %>
