@@ -30,8 +30,10 @@ module GithubScrapper
 
         organizations = Array.new #parsed_profile_page.css('.h-card div .avatar-group-item')
 
-        localization = parsed_profile_page.css('ul.vcard-details span.p-label').first.text
-        localization = localization.strip()
+        localization = parsed_profile_page.css('ul.vcard-details span.p-label')
+        unless localization.empty?
+            localization = localization.first.text.strip()
+        end
 
         user_profile = {
             shortened_url: shortened_url,

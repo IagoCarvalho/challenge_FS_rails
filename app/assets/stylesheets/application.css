@@ -1,24 +1,22 @@
-/*
- * This is a manifest file that'll be compiled into application.css, which will include all the files
- * listed below.
- *
- * Any CSS and SCSS file within this directory, lib/assets/stylesheets, or any plugin's
- * vendor/assets/stylesheets directory can be referenced here using a relative path.
- *
- * You're free to add application-wide styles to this file and they'll appear at the bottom of the
- * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
- * files in this directory. Styles in this file should be added after the last require_* statement.
- * It is generally better to create a new file per style scope.
- *
- *= require_tree .
- *= require_self
- */
- 
- body {
-     background-color: #eceff1;
- }
 
- .profile-item-container {
+/* =============================================================================
+    General Application layout styles (navbar, logo)
+   =============================================================================
+*/
+body {
+    background-color: #eceff1;
+}
+
+i.fab.fa-github.brand-logo.center.main-logo {
+    font-size: 3em;
+}
+
+
+/* =============================================================================
+    Profile's Index page styles (main cards container, cards details )
+   =============================================================================
+*/
+.profile-item-container {
     display: flex;
     justify-content: space-between;
     padding: 2%;
@@ -32,10 +30,7 @@
     margin-top: 10%;
     display: flex;
     padding: 3%;
-}
-
-i.fab.fa-github.brand-logo.center.main-logo {
-    font-size: 3em;
+    flex-wrap: wrap;
 }
 
 .profile-card-content,
@@ -48,7 +43,73 @@ i.fab.fa-github.brand-logo.center.main-logo {
     background-color: white;
 }
 
+
+/* ================================================================================
+    Profile's create and update page styles (forms)
+   ================================================================================
+*/
 .new_profile,
 .edit_profile{
     margin: 10% 0%;
+}
+
+
+/* =============================================================================
+    Profile's Detail/Edit styles (container, cards, action buttons )
+   =============================================================================
+*/
+.profile-card{
+    width: 40%;
+}
+
+div.profile-card img.profile-picture{
+    position: absolute;
+    z-index: 200000;
+    height: 150px;
+    width: 150px;
+    margin: 15px auto;
+    border-radius: 50%;
+}
+
+.profile-card-name{
+    width: 100%;
+    text-align: center;
+}
+
+.profile-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10%;
+}
+
+.card-content-row{
+    padding-top: 2%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card-content-row i{
+    font-size: 2em;
+}
+
+.i-container{
+    width: 34px;
+    text-align: center;
+}
+
+.profiles-action-container{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5%;
+}
+
+.card-content-row p{
+    font-weight: bold;
+}
+
+.profile-index-image{
+    height: 88px;
+    width: 88px;
 }

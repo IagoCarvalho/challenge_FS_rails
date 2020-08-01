@@ -1,25 +1,72 @@
-<h1>Perfil de: <%= @profile.name%></h1>
+<div class="profile-container">
 
-<%= image_tag @profile.profile_pic_url %>
-<%= link_to @profile.git_url, @profile.git_url %>
+    <div class="card profile-card">
+        <div class="card-image">
+            <%= image_tag "profile-background-pattern.jpg" %>
+            <span class="card-title profile-card-name"><%= @profile.name%></span>
+            <%= image_tag @profile.profile_pic_url, :class => "profile-picture" %>
+            <%= link_to raw("<i class=\"fa fa-edit\"></i>"), edit_profile_path, method: :get, :class => "btn-floating halfway-fab waves-effect waves-light red" %>
+        </div>
 
-<h2>Username do git: <%= @profile.git_username %></h2>
+        <div class="card-content">
+            <div class="center-align">
+                <%= link_to @profile.git_url, @profile.git_url %>
+            </div>
 
-<% if @profile.has_attribute?(:localization) %>
-<h2>Localização: <%= @profile.localization %></h2>
-<% end %>
+            <div class="card-content-row">
+                <div class="i-container">
+                    <i class="fab fa-github brand-logo center"></i>
+                </div>
+                <p><%= @profile.git_username %></p>
+            </div>
 
-<% if @profile.has_attribute?(:organizations) %>
-<h2>Organizações: <%= @profile.organizations %></h2>
-<% end %>
+            <% if not @profile[:localization].nil? %>
+                <div class="card-content-row">
+                <div class="i-container">
+                    <i class="fas fa-map-marker-alt"></i>
+                </div>
+                    <p><%= @profile.localization %></p>
+                </div>
+            <% end %>
 
-<h2>Followers: <%= @profile.followers %></h2>
-<h2>Following: <%= @profile.following %></h2>
-<h2>Stars given: <%= @profile.stars_given %></h2>
-<h2>Número de seguidores: <%= @profile.followers %></h2>
-<h2>Contribuições no último ano: <%= @profile.last_years_contributions %></h2>
+            <% if not @profile[:organizations].nil? %>
+                <div class="card-content-row">
+                    <div class="i-container">
+                        <i class="fab fa-github brand-logo center main-logo"></i>
+                    </div>
+                    <p><%= @profile.organizations %></p>
+                </div>
+            <% end %>
 
-<%= button_to "Editar perfil", edit_profile_path, method: :get%>
-<%= button_to "Deletar perfil", profile_path, method: :delete%>
 
-<%= link_to  "Retornar ao início", profiles_path %>
+            <div class="card-content-row">
+                <div class="i-container">
+                    <i class="fas fa-star"></i>
+                </div>
+                <p><%= @profile.stars_given %></p>
+            </div>
+
+            <div class="card-content-row">
+                <p>Contribuições no último ano:</p>
+                <p><%= @profile.last_years_contributions %></p>
+            </div>
+
+            <div class="card-content-row">
+                <p>Número de seguidores:</p>
+                <p><%= @profile.followers %></p>
+            </div>
+
+            <div class="card-content-row">
+                <p>Seguindo:</p>
+                <p><%= @profile.following %></p>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<div class="profiles-action-container">
+    <%= link_to raw("<i class=\"far fa-trash-alt\">APAGAR</i>"), profile_path, method: :delete, :class => "btn waves-effect waves-light red" %>
+    <%= link_to "Atualizar informações do github", refresh_path(@profile) , method: :get, :class => "btn" %>
+</div>

@@ -16,10 +16,6 @@ class ProfilesController < ApplicationController
     @profile = Profile.new(create_profile_params)
 
     github_data = web_scrap_user_profile(@profile.git_url)
-
-    puts "\n\n------------------------"
-    puts github_data
-    puts "\n\n------------------------"
     @profile.attributes = {
       git_url: github_data[:shortened_url],
       git_username: github_data[:git_username],
@@ -49,7 +45,6 @@ class ProfilesController < ApplicationController
 
   def show
     @profile = Profile.find(params[:id])
-    puts @profile
   end
 
   def edit
@@ -60,7 +55,15 @@ class ProfilesController < ApplicationController
     @profile = Profile.find(params[:id])
 
     if @profile.update_attributes(update_profile_params)
-      @profile.git_url = shorten_url(update_profile_params[:git_url])
+
+      unless not @profile.valid? and @profile.save
+        flash[:errors] = @profile.errors.full_messages
+      end
+
+      if @profile.save
+        @profile.git_url = shorten_url(update_profile_params[:git_url])
+        @profile.save
+      end
 
       redirect_to profile_path(@profile)
     else
@@ -76,6 +79,40 @@ class ProfilesController < ApplicationController
 
     redirect_to profiles_path
   end
+
+  def refresh
+    @profile = Profile.find(params[:id])
+
+    github_data = web_scrap_user_profile(@profile.git_url)
+    @profile.attributes = {
+      name: @profile.name,
+      git_url: @profile.git_url,
+      git_username: github_data[:git_username],
+      followers: github_data[:followers],
+      following: github_data[:following],
+      stars_given: github_data[:stars_given],
+      profile_pic_url: github_data[:profile_pic_url],
+      last_years_contributions: github_data[:last_years_contributions]
+    }
+
+    # Optional parameters
+    unless not github_data.has_key? :localization
+      @profile.localization = github_data[:localization]
+    end
+
+    unless not github_data.has_key? :organizations
+      @profile.organizations = github_data[:organizations]
+    end
+
+    if @profile.valid?
+      @profile.save
+    else
+      redirect_to profile_path(@profile), flash: { error: "Ocorreu um erro ao recuperar as informações do github."}
+    end
+
+    redirect_to profile_path(@profile)
+  end
+
 
   private
 
@@ -101,7 +138,6 @@ class ProfilesController < ApplicationController
     )
   end
 
-  # sobrescrita de metodo?
   def profile_search_params
     params.require(:profile).permit(
       :name, 

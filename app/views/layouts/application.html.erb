@@ -15,7 +15,7 @@
   <body>
     <nav class="blue-grey">
       <div class="nav-wrapper">
-        <i class="fab fa-github brand-logo center main-logo"></i>
+        <%= link_to raw("<i class=\"fab fa-github brand-logo center main-logo\"></i>"), profiles_path, method: :get %>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
           <%= link_to  "ADICIONAR NOVO PERFIL", new_profile_path %>
         </ul>

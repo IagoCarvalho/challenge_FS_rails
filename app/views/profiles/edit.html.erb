@@ -14,6 +14,5 @@
     <%= f.text_field :git_url%>
 
     <%= f.submit 'Salvar Alterações', :class => 'btn right' %>
+    <%= link_to  "Voltar", profile_path(@profile), :class => 'btn left red' %>
 <% end %>
-
-<%= link_to  "Voltar", profile_path(@profile), :class => 'btn left red' %>
