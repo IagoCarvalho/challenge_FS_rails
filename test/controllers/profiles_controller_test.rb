@@ -1,39 +1,25 @@
 require 'test_helper'
 
 class ProfilesControllerTest < ActionDispatch::IntegrationTest
-  test "should get index" do
-    get profiles_index_url
+
+  setup do
+    #@valid_profile = profiles(:example_user)
+  end
+
+  test "should get new profile" do
+    get new_profile_url
     assert_response :success
   end
 
-  test "should get new" do
-    get profiles_new_url
-    assert_response :success
-  end
-
-  test "should get create" do
-    get profiles_create_url
-    assert_response :success
-  end
-
-  test "should get show" do
-    get profiles_show_url
-    assert_response :success
-  end
-
-  test "should get edit" do
-    get profiles_edit_url
-    assert_response :success
-  end
-
-  test "should get update" do
-    get profiles_update_url
-    assert_response :success
-  end
-
-  test "should get destroy" do
-    get profiles_destroy_url
-    assert_response :success
+  test "should create new profile" do
+    assert_difference('Profile.count') do
+      post profiles_url, params: {
+        profile: {
+          name: 'example', 
+          git_url: 'https://github.com/example'
+          }
+        }
+    end
   end
 
 end

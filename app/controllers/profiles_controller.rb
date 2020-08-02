@@ -33,7 +33,7 @@ class ProfilesController < ApplicationController
         last_years_contributions: github_data[:last_years_contributions]
       }
       
-      # Optional parameters
+      # Optional attributes
       unless not github_data.has_key? :localization
         @profile.localization = github_data[:localization]
       end
@@ -112,7 +112,7 @@ class ProfilesController < ApplicationController
       last_years_contributions: github_data[:last_years_contributions]
     }
 
-    # Optional parameters
+    # Optional attributes
     unless not github_data.has_key? :localization
       @profile.localization = github_data[:localization]
     end

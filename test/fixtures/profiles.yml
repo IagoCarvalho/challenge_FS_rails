@@ -1,9 +1,28 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  name: MyString
-  git_url: MyString
+valid_user_profile_1:
+  name: user_valid_1
+  git_url: https://github.com/IagoCarvalho
 
-two:
-  name: MyString
-  git_url: MyString
+user_profile_with_opt_params:
+  name: user_valid_opt_params
+  git_url: https://github.com/tapumar
+
+user_profile_without_opt_params:
+  name: user_without_opt_params
+  git_url: https://github.com/izaelvilela
+
+invalid_user_profile_1:
+  name: user_none
+  git_url: 'github.com/none'
+
+empty_user:
+  name: dummy_user
+  git_url: https://github.com/DummyWebScrapperTest
+
+my_data:
+  name: Iago Carvalho
+  git_url: https://github.com/IagoCarvalho
+  localization: Brasília - DF
+  git_username: IagoCarvalho
+  profile_pic_url: https://avatars1.githubusercontent.com/u/20978934?s=88&u=0ca1bce8815513c7bed69f27b11190a96d244bdb&v=4
