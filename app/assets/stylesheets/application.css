@@ -105,8 +105,13 @@ div.profile-card img.profile-picture{
     margin-top: 5%;
 }
 
-.card-content-row p{
+.card-content-row p,
+.card-content-orgs p{
     font-weight: bold;
+}
+
+.card-content-orgs{
+    padding-top: 10%;
 }
 
 .profile-index-image{

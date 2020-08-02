@@ -28,13 +28,6 @@ module GithubScrapper
         last_years_contributions = parsed_profile_page.css('h2.f4.text-normal').text
         last_years_contributions = last_years_contributions.scan(/\d+/)[0]
 
-        organizations = Array.new #parsed_profile_page.css('.h-card div .avatar-group-item')
-
-        localization = parsed_profile_page.css('ul.vcard-details span.p-label')
-        unless localization.empty?
-            localization = localization.first.text.strip()
-        end
-
         user_profile = {
             shortened_url: shortened_url,
             git_username: git_username,
@@ -46,11 +39,21 @@ module GithubScrapper
         }
 
         # Append optional params
+        profile_organizations = parsed_profile_page.css('a.avatar-group-item')
+        localization = parsed_profile_page.css('ul.vcard-details span.p-label')
+        
         unless localization.empty?
+            localization = localization.first.text.strip()
             user_profile[:localization] = localization
         end
 
-        unless organizations.empty?
+        unless profile_organizations.empty?
+            organizations = Array.new
+            for org in profile_organizations do
+                organizations.push(org['aria-label'])
+            end
+            organizations = organizations.join(', ')
+
             user_profile[:organizations] = organizations
         end
 

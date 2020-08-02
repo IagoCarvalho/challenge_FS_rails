@@ -12,27 +12,36 @@ class ProfilesController < ApplicationController
   end
 
   def create
-
     @profile = Profile.new(create_profile_params)
 
-    github_data = web_scrap_user_profile(@profile.git_url)
-    @profile.attributes = {
-      git_url: github_data[:shortened_url],
-      git_username: github_data[:git_username],
-      followers: github_data[:followers],
-      following: github_data[:following],
-      stars_given: github_data[:stars_given],
-      profile_pic_url: github_data[:profile_pic_url],
-      last_years_contributions: github_data[:last_years_contributions]
-    }
-
-    # Optional parameters
-    unless not github_data.has_key? :localization
-      @profile.localization = github_data[:localization]
+    begin
+      github_data = web_scrap_user_profile(@profile.git_url)
+    rescue
+      flash[:errors] = Array("Não foi possível recuperar os dados da url especificada.")
+      redirect_to new_profile_path
+      return
     end
 
-    unless not github_data.has_key? :organizations
-      @profile.organizations = github_data[:organizations]
+    unless github_data.nil?
+      @profile.attributes = {
+        git_url: github_data[:shortened_url],
+        git_username: github_data[:git_username],
+        followers: github_data[:followers],
+        following: github_data[:following],
+        stars_given: github_data[:stars_given],
+        profile_pic_url: github_data[:profile_pic_url],
+        last_years_contributions: github_data[:last_years_contributions]
+      }
+      
+      # Optional parameters
+      unless not github_data.has_key? :localization
+        @profile.localization = github_data[:localization]
+      end
+  
+      unless not github_data.has_key? :organizations
+        @profile.organizations = github_data[:organizations]
+      end
+
     end
 
     if @profile.save and @profile.valid?
@@ -41,6 +50,7 @@ class ProfilesController < ApplicationController
       flash[:errors] = @profile.errors.full_messages
       redirect_to new_profile_path
     end
+
   end
 
   def show
@@ -83,7 +93,14 @@ class ProfilesController < ApplicationController
   def refresh
     @profile = Profile.find(params[:id])
 
-    github_data = web_scrap_user_profile(@profile.git_url)
+    begin
+      github_data = web_scrap_user_profile(@profile.git_url)
+    rescue
+      flash[:errors] = Array("Não foi possível recuperar os dados da url especificada.")
+      redirect_to profile_path(@profile)
+      return
+    end
+
     @profile.attributes = {
       name: @profile.name,
       git_url: @profile.git_url,

@@ -1,3 +1,9 @@
+<% if flash[:errors] %>
+    <% flash[:errors].each do |error| %>
+      <p style="color: red"><%= error %></p>
+    <% end %>
+<% end %>
+
 <div class="profile-container">
 
     <div class="card profile-card">
@@ -29,16 +35,6 @@
                 </div>
             <% end %>
 
-            <% if not @profile[:organizations].nil? %>
-                <div class="card-content-row">
-                    <div class="i-container">
-                        <i class="fab fa-github brand-logo center main-logo"></i>
-                    </div>
-                    <p><%= @profile.organizations %></p>
-                </div>
-            <% end %>
-
-
             <div class="card-content-row">
                 <div class="i-container">
                     <i class="fas fa-star"></i>
@@ -60,6 +56,17 @@
                 <p>Seguindo:</p>
                 <p><%= @profile.following %></p>
             </div>
+
+            <% if not @profile[:organizations].nil? %>
+                <div class="card-content-orgs">
+
+                    <% @profile.organizations.split(', ').each do |organization| %>
+                        <div class="chip">
+                            <%= organization %>
+                        </div>
+                    <% end %>
+                </div>
+            <% end %>
 
         </div>
     </div>
